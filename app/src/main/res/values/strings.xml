@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">IndexWatcher</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_test_alert">Test alert notification</string>
+    <string name="load_failed">Failed to load!</string>
+    <string name="no_permission">Failed to get Internet permission!</string>
+    <string name="nothing_happened">Nothing has changed</string>
+    <string name="something_happened">Something has happened!</string>
+
+    <string name="title_activity_settings">Settings</string>
+    <string name="background_service">Background Service</string>
+
+    <string name="enable_passive">Enable passive notification</string>
+    <string name="enable_passive_description">Enable notification even when nothing has changed</string>
+    <string name="passive_messages_on">Enable notification even when nothing has changed</string>
+    <string name="passive_messages_off">Enable notification only if something has changed</string>
+
+    <string name="autorun_title">Start service with phone</string>
+    <string name="autorun_on">Service will start with phone</string>
+    <string name="autorun_off">Service will not start with phone</string>
+
+    <string name="timer_interval_title">How often to check for changes</string>
+    <string name="timer_interval_description">In minutes</string>
+
+    <string name="target_link_title">Target link</string>
+    <string name="target_link_default">https://store.steampowered.com/valveindex</string>
+    <string name="button_toggle_text">Toggle</string>
+
+    <string name="current_service_status_description">Current service status:</string>
+    <string name="status_on">ON</string>
+    <string name="status_off">OFF</string>
+
+    <string name="search_string_default">Notify Me</string>
+    <string name="search_string_title">Target string</string>
+    <string name="search_string_description">What string to search for</string>
+
+    <string name="search_times_title">String count</string>
+    <string name="search_times_description">How many times does the string usually appear</string>
+
+
+</resources>

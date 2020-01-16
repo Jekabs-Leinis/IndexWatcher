@@ -1,0 +1,61 @@
+<!--
+  ~ Copyright 2018 The app Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory app:title="@string/background_service">
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:key="passive_messages"
+            app:summary="@string/enable_passive_description"
+            app:summaryOff="@string/passive_messages_off"
+            app:summaryOn="@string/passive_messages_on"
+            app:title="@string/enable_passive" />
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="autorun"
+            app:summaryOff="@string/autorun_off"
+            app:summaryOn="@string/autorun_on"
+            app:title="@string/autorun_title" />
+        <EditTextPreference
+            android:defaultValue="10"
+            android:digits="0123456789"
+            android:inputType="numberDecimal"
+            android:key="timer_interval"
+            android:singleLine="true"
+            android:summary="@string/timer_interval_description"
+            android:title="@string/timer_interval_title" />
+        <EditTextPreference
+            android:defaultValue="@string/target_link_default"
+            android:key="target_link"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/target_link_title" />
+        <EditTextPreference
+            android:defaultValue="@string/search_string_default"
+            android:key="search_string"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/search_string_description"
+            android:title="@string/search_string_title" />
+        <EditTextPreference
+            android:defaultValue="13"
+            android:key="search_count"
+            android:singleLine="true"
+            android:summary="@string/search_times_description"
+            android:title="@string/search_times_title" />
+    </PreferenceCategory>
+</PreferenceScreen>
