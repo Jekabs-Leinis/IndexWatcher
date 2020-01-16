@@ -21,13 +21,15 @@ import com.android.volley.toolbox.Volley
 import kotlin.random.Random
 
 
-class Alarm : BroadcastReceiver() {
+@Suppress("DEPRECATION")
+class AlarmService : BroadcastReceiver() {
 
     private var CHANNEL_ID = "IndexMessages"
     private var TAG = "Alert"
     private lateinit var SP: SharedPreferences
 
     override fun onReceive(context: Context, intent: Intent) {
+        setAlarm(context)
         SP = context.getSharedPreferences(
             context.packageName + "_preferences",
             Context.MODE_MULTI_PROCESS
@@ -80,14 +82,13 @@ class Alarm : BroadcastReceiver() {
                 builder.setContentTitle(context.resources.getString(R.string.nothing_happened))
                 builder.priority = NotificationCompat.PRIORITY_DEFAULT
             }
-            else -> setAlarm(context)
+            else -> return
         }
 
         val notification = builder.build()
         val nm = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         nm.notify(Random.nextInt(), notification)
-        setAlarm(context)
     }
 
     private fun buildPriorityNotification(context: Context, builder: NotificationCompat.Builder) {
@@ -127,7 +128,7 @@ class Alarm : BroadcastReceiver() {
     }
 
     private fun getAlarmIntent(context: Context): PendingIntent {
-        val i = Intent(context, Alarm::class.java)
+        val i = Intent(context, AlarmService::class.java)
         return PendingIntent.getBroadcast(context, 0, i, 0)
     }
 
@@ -135,5 +136,6 @@ class Alarm : BroadcastReceiver() {
         val am = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = getAlarmIntent(context)
         am.cancel(intent)
+        intent.cancel()
     }
 }

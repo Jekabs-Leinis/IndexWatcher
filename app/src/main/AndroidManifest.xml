@@ -35,17 +35,15 @@
         </activity>
 
         <receiver
-            android:name=".Alarm"
+            android:name=".AlarmService"
             android:process=":remote" />
+
         <receiver android:name=".AutoRun">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
-        <service
-            android:name=".WatcherService"
-            android:process=":remote" />
     </application>
 
 </manifest>

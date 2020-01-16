@@ -1,7 +1,6 @@
 package com.leinis.indexwatcher
 
-import android.app.ActivityManager
-import android.content.Context
+import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -18,21 +17,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        if (!isServiceRunning(WatcherService::class.java)) {
+        if (isAlarmSet()) {
             val text = findViewById<TextView>(R.id.status_text)
             text.setText(R.string.status_on)
         }
     }
 
     fun toggleService(view: View) {
-        val serviceIntent = Intent(this, WatcherService::class.java)
-
         val text = findViewById<TextView>(R.id.status_text)
-        if (!isServiceRunning(WatcherService::class.java)) {
-            startService(serviceIntent)
+        if (!isAlarmSet()) {
+            AlarmService().setAlarm(this)
             text.setText(R.string.status_on)
         } else {
-            stopService(serviceIntent)
+            AlarmService().stopAlarm(this)
             text.setText(R.string.status_off)
         }
     }
@@ -46,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_settings -> showSettings()
-        R.id.action_test_alarm -> Alarm().triggerAlarm(this)
+        R.id.action_test_alarm -> AlarmService().triggerAlarm(this)
         else -> super.onOptionsItemSelected(item)
     }
 
@@ -56,16 +53,12 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun isServiceRunning(serviceClass: Class<*>): Boolean {
-        val manager =
-            applicationContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        @Suppress("DEPRECATION")
-        for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.name == service.service.className) {
-                return true
-            }
-        }
-
-        return false
+    private fun isAlarmSet(): Boolean {
+        return PendingIntent.getBroadcast(
+            this,
+            0,
+            Intent(this, AlarmService::class.java),
+            PendingIntent.FLAG_NO_CREATE
+        ) != null
     }
 }
