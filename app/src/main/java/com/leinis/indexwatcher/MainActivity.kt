@@ -13,11 +13,15 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        if (!isServiceRunning(WatcherService::class.java)) {
+            val text = findViewById<TextView>(R.id.status_text)
+            text.setText(R.string.status_on)
+        }
     }
 
     fun toggleService(view: View) {

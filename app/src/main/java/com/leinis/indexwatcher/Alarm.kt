@@ -7,12 +7,12 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
-import androidx.preference.PreferenceManager
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -23,14 +23,19 @@ import kotlin.random.Random
 class Alarm : BroadcastReceiver() {
 
     private var CHANNEL_ID = "IndexMessages"
+    private var TAG = "Alert"
+    private lateinit var SP: SharedPreferences
 
     override fun onReceive(context: Context, intent: Intent) {
+        SP = context.getSharedPreferences(
+            context.packageName + "_preferences",
+            Context.MODE_MULTI_PROCESS
+        )
         makeRequestToSteam(context)
     }
 
     private fun makeRequestToSteam(context: Context) {
-        Log.e("Alert", "Making a request")
-        val SP = PreferenceManager.getDefaultSharedPreferences(context)
+        Log.d(TAG, "Making a request")
         val queue = Volley.newRequestQueue(context)
         val url =
             SP.getString("target_link", context.resources.getString(R.string.target_link_default))
@@ -49,7 +54,6 @@ class Alarm : BroadcastReceiver() {
     }
 
     private fun processResponse(context: Context, response: String) {
-        val SP = PreferenceManager.getDefaultSharedPreferences(context)
         val string = SP.getString(
             "search_string",
             context.resources.getString(R.string.search_string_default)
@@ -59,10 +63,10 @@ class Alarm : BroadcastReceiver() {
     }
 
     private fun sendNotification(context: Context, stringCount: Int) {
-        val SP = PreferenceManager.getDefaultSharedPreferences(context)
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_index_notification)
+        Log.d(TAG, "Search count: " + SP.getString("search_count", "69"))
         when {
             stringCount != SP.getString(
                 "search_count",
@@ -95,13 +99,20 @@ class Alarm : BroadcastReceiver() {
     }
 
     fun triggerAlarm(context: Context): Boolean {
+        SP = context.getSharedPreferences(
+            context.packageName + "_preferences",
+            Context.MODE_MULTI_PROCESS
+        )
         sendNotification(context, 999)
 
         return true
     }
 
     fun setAlarm(context: Context) {
-        val SP = PreferenceManager.getDefaultSharedPreferences(context)
+        val SP = context.getSharedPreferences(
+            context.packageName + "_preferences",
+            Context.MODE_MULTI_PROCESS
+        )
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = getAlarmIntent(context)
 
