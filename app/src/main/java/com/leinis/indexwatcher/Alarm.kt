@@ -9,6 +9,7 @@ import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.media.AudioManager
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
@@ -79,13 +80,14 @@ class Alarm : BroadcastReceiver() {
                 builder.setContentTitle(context.resources.getString(R.string.nothing_happened))
                 builder.priority = NotificationCompat.PRIORITY_DEFAULT
             }
-            else -> return
+            else -> setAlarm(context)
         }
 
         val notification = builder.build()
         val nm = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         nm.notify(Random.nextInt(), notification)
+        setAlarm(context)
     }
 
     private fun buildPriorityNotification(context: Context, builder: NotificationCompat.Builder) {
@@ -94,7 +96,7 @@ class Alarm : BroadcastReceiver() {
         builder.setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
         builder.setStyle(NotificationCompat.InboxStyle())
         val audio = Uri.parse("android.resource://" + context.packageName + "/" + R.raw.nuke)
-        builder.setSound(audio)
+        builder.setSound(audio, AudioManager.STREAM_ALARM)
         builder.priority = NotificationCompat.PRIORITY_HIGH
     }
 
@@ -117,10 +119,9 @@ class Alarm : BroadcastReceiver() {
         val intent = getAlarmIntent(context)
 
         val minutes = SP.getString("timer_interval", "10")?.toInt() ?: return
-        alarmManager.setRepeating(
+        alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            System.currentTimeMillis(),
-            (1000 * 60 * minutes).toLong(),
+            System.currentTimeMillis() + (1000 * 60 * minutes).toLong(),
             intent
         )
     }
